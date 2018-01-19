@@ -1,0 +1,9 @@
+<table>
+    {% for row in boxscore %}
+        <tr>
+        {% for field in row %}
+            <td>{{field}}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
