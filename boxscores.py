@@ -5,15 +5,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def boxscore():
-    json = get_boxscore_json()
-
     boxscore = []
-    boxscore.append(json['resultSets'][0]['headers'])
+    json = get_boxscore_json()
+    header = clean_boxscore_row(json['resultSets'][0]['headers'])
 
     for player_row in json['resultSets'][0]['rowSet']:
-        boxscore.append(player_row)
+        boxscore.append(clean_boxscore_row(player_row))
 
-    return render_template('boxscore.html', boxscore=boxscore)
+    return render_template('boxscore.html', header=header, boxscore=boxscore)
 
 # eventually this will pull json directly from the nba api
 def get_boxscore_json():
@@ -21,3 +20,11 @@ def get_boxscore_json():
         boxscore = json.load(f)
 
     return boxscore
+
+def clean_boxscore_row(row):
+    cols = [0, 1, 3, 4, 6, 7]
+
+    for i in reversed(cols):
+        del row[i]
+
+    return row

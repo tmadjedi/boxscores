@@ -1,9 +1,21 @@
-<table>
-    {% for row in boxscore %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<div class="container">
+    <table class="table">
         <tr>
-        {% for field in row %}
-            <td>{{field}}</td>
-        {% endfor %}
+            {% for field in header %}
+            <th>{{field}}</th>
+            {% endfor %}
         </tr>
-    {% endfor %}
-</table>
+        {% for row in boxscore %}
+            <tr>
+            {% for field in row %}
+                <td>{{field}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
