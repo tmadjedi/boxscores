@@ -2,6 +2,21 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <div class="container">
+    <ul class="list-inline">
+    {% for date in dates %}
+        <li>
+            <a href=/{{date}}>
+            {% if loop.index == 4 %}
+                <strong>{{date}}</strong>
+            {% else %}
+                {{date}}
+            {% endif %}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<div class="container">
     <table class="table">
         <tr>
             <th>GAME_ID</th>

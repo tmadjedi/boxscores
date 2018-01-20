@@ -3,6 +3,7 @@ from flask import Flask, render_template
 import json
 import urllib.request
 import gzip
+import datetime
 
 app = Flask(__name__)
 
@@ -20,6 +21,15 @@ headers = {
 @app.route('/', defaults={'date': None})
 @app.route('/<date>')
 def show_scoreboard(date):
+    if date is None:
+        date = datetime.datetime.today()
+    else:
+        date = datetime.datetime.strptime(date, '%Y%m%d')
+
+    dates = [date + datetime.timedelta(days=i) for i in range(-3, 4)]
+    dates = [date.strftime('%Y%m%d') for date in dates]
+    date = date.strftime('%m/%d/%Y')
+
     json = get_scoreboard_json(date)
     indexes = [2, 4, 22]
     rows = json['resultSets'][1]['rowSet']
@@ -29,7 +39,7 @@ def show_scoreboard(date):
     for row in rows:
         games.append([row[i] for i in indexes])
 
-    return render_template('scoreboard.html', games=games)
+    return render_template('scoreboard.html', dates=dates, games=games)
 
 @app.route('/boxscore/<gameid>')
 def show_boxscore(gameid):
@@ -52,9 +62,12 @@ def get_boxscore_json(gameid):
     return boxscore
 
 def get_scoreboard_json(date):
-    with open('static/01182018_scoreboard.json', 'r') as f:
-        scoreboard = json.load(f)
+    url = 'http://stats.nba.com/stats/scoreboardV2?gamedate={}&leagueid=00&dayoffset=0'.format(date)
 
+    req = urllib.request.Request(url, headers=headers)
+    resp_bytes = gzip.decompress(urllib.request.urlopen(req).read())
+    scoreboard = json.loads(resp_bytes.decode('utf-8'))
+    
     return scoreboard
 
 def clean_boxscore_row(row):
