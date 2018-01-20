@@ -21,9 +21,13 @@ headers = {
 @app.route('/<date>')
 def show_scoreboard(date):
     json = get_scoreboard_json(date)
-    indexes = [2, 4]
+    indexes = [2, 4, 22]
     rows = json['resultSets'][1]['rowSet']
-    games = list(set([row[2] for row in rows]))
+
+    games = []
+
+    for row in rows:
+        games.append([row[i] for i in indexes])
 
     return render_template('scoreboard.html', games=games)
 

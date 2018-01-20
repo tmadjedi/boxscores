@@ -1,3 +1,30 @@
-{% for game in games %}
-<li>{{game}}</li>
-{% endfor %}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>GAME_ID</th>
+            <th>TEAM</th>
+            <th>SCORE</th>
+        </tr>
+    {% for game in games %}
+        <tr>
+        {% if loop.index % 2 == 1 %}
+            <td>
+                <a href=/boxscore/{{game[0]}}>
+                    {{game[0]}}
+                </a>
+            </td>
+        {% else %}
+            <td></td>
+        {% endif %}
+            <td>{{game[1]}}</td>
+            <td>{{game[2]}}</td>
+        </tr>
+    {% if loop.index % 2 == 0 %}
+        <tr><td></td><td></td><td></td></tr>
+    {% endif %}
+    {% endfor %}
+    </table>
+</div>
