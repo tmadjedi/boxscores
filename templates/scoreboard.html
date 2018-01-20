@@ -1,10 +1,10 @@
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <div class="container">
     <ul class="list-inline">
     {% for date in dates %}
-        <li>
+        <li class="list-inline-item">
             <a href=/{{date}}>
             {% if loop.index == 4 %}
                 <strong>{{date}}</strong>
@@ -17,7 +17,7 @@
     </ul>
 </div>
 <div class="container">
-    <table class="table">
+    <table class="table table-sm">
         <tr>
             <th>GAME_ID</th>
             <th>TEAM</th>

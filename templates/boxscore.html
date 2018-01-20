@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <div class="container">
-    <table class="table">
+{% for team in boxscore %}
+<h2>{{team[0]}}</h2>
+    <table class="table table-sm">
         <tr>
         {% for field in header %}
             <th>{{field}}</th>
         {% endfor %}
         </tr>
-        {% for row in boxscore %}
-            <tr>
-            {% for field in row %}
-                <td>{{field}}</td>
-            {% endfor %}
-            </tr>
+    {% for row in team[1] %}
+        <tr>
+        {% for field in row %}
+            <td>{{field}}</td>
         {% endfor %}
+        </tr>
+    {% endfor %}
     </table>
+{% endfor %}
 </div>
