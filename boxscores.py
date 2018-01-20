@@ -1,7 +1,21 @@
 from flask import Flask, render_template
+
 import json
+import urllib.request
+import gzip
 
 app = Flask(__name__)
+
+headers = {
+    "Accept-Encoding": "gzip, deflate",
+    "Accept-Language": "en-US",
+    "Accept": "*/*",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
+    "Referer": "http://stats.nba.com/scores/",
+    "Connection": "keep-alive",
+    "Cache-Control": "no-cache",
+    "Origin": "http://stats.nba.com",
+}
 
 @app.route('/', defaults={'date': None})
 @app.route('/<date>')
@@ -24,10 +38,12 @@ def show_boxscore(gameid):
 
     return render_template('boxscore.html', header=header, boxscore=boxscore)
 
-# eventually this will pull json directly from the nba api
 def get_boxscore_json(gameid):
-    with open('static/0021600622_boxscore.json', 'r') as f:
-        boxscore = json.load(f)
+    url = 'http://stats.nba.com/stats/boxscoretraditionalv2?gameid={}&startperiod=1&endperiod=10&startrange=0&endrange=2147483647&rangetype=2'.format(gameid)
+
+    req = urllib.request.Request(url, headers=headers)
+    resp_bytes = gzip.decompress(urllib.request.urlopen(req).read())
+    boxscore = json.loads(resp_bytes.decode('utf-8'))
 
     return boxscore
 
