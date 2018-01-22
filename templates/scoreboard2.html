@@ -1,0 +1,58 @@
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<div class="container">
+    <ul class="list-inline">
+    {% for date in dates %}
+        <li class="list-inline-item">
+            <a href=/{{date}}><h4>
+            {% if loop.index == 4 %}
+                <strong>{{date}}</strong>
+            {% else %}
+                {{date}}
+            {% endif %}
+            </h4></a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<div class="container">
+{% for game in games %}
+<a href=/boxscore2/{{dates[3]}}/{{game['gameId']}}>
+    <h5>{{game['vTeam']['triCode']}} ({{game['vTeam']['win']}}-{{game['vTeam']['loss']}}) @ {{game['hTeam']['triCode']}} ({{game['hTeam']['win']}}-{{game['hTeam']['loss']}})</h5>
+</a>
+{% if game['isGameActivated'] %}
+<h6>{{game['clock']}} in period {{game['period']['current']}}</h6>
+{% endif %}
+    <table class="table table-sm">
+        <tr>
+            <th>TEAM</th>
+        {% for q in game['vTeam']['linescore'] %}
+            <th>
+        {% if loop.index <= 4 %}
+           Q{{loop.index}}
+        {% else %}
+           OT{{loop.index - 4}}
+        {% endif %}
+            </th>
+        {% endfor %}
+            <th>SCORE</th>
+        </tr>
+        <tr>
+            <td>{{game['vTeam']['triCode']}}</td>
+        {% for q in game['vTeam']['linescore'] %}
+        <td>{{q['score']}}</td>
+        {% endfor %}
+            <td>{{game['vTeam']['score']}}</td>
+        </tr>
+        <tr>
+            <td>{{game['hTeam']['triCode']}} </td>
+        {% for q in game['hTeam']['linescore'] %}
+            <td>{{q['score']}}</td>
+        {% endfor %}
+            <td>{{game['hTeam']['score']}}</td>
+        </tr>
+    </table>
+{% endfor %}
+</div>

@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/', defaults={'date': None})
 @app.route('/<date>')
-def show_scoreboard(date):
+def show_scoreboard2(date):
     if date is None:
         date = datetime.datetime.today()
     else:
@@ -18,18 +18,11 @@ def show_scoreboard(date):
     dates = [date + datetime.timedelta(days=i) for i in range(-3, 4)]
     dates = [date.strftime('%Y%m%d') for date in dates]
     current_date = date.strftime('%Y%m%d')
-    date = date.strftime('%m/%d/%Y')
+    date = date.strftime('%Y%m%d')
 
-    json = get_scoreboard_json(date)
-    indexes = [2, 4, 22]
-    rows = json['resultSets'][1]['rowSet']
+    json = get_scoreboard2_json(date)
 
-    games = []
-
-    for row in rows:
-        games.append([row[i] for i in indexes])
-
-    return render_template('scoreboard.html', current_date=current_date, dates=dates, games=games)
+    return render_template('scoreboard2.html', dates=dates, games=json['games'])
 
 @app.route('/boxscore2/<date>/<gameid>')
 def show_boxscore2(date, gameid):
@@ -64,8 +57,8 @@ def get_players_json():
     url = 'http://data.nba.net/data/10s/prod/v1/{}/players.json'.format(year)
     return request_and_decode(url)
 
-def get_scoreboard_json(date):
-    url = 'http://stats.nba.com/stats/scoreboardV2?gamedate={}&leagueid=00&dayoffset=0'.format(date)
+def get_scoreboard2_json(date):
+    url = 'http://data.nba.net/data/10s/prod/v1/{}/scoreboard.json'.format(date)
     return request_and_decode(url)
 
 def clean_boxscore2_row(row):
