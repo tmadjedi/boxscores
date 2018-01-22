@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<div class="container">
+{% for team in teams %}
+<h2>{{team[1]}}</h2>
+    <table class="table table-sm">
+        <tr>
+            <th>PLAYER</th>
+            <th>POS</th>
+            <th>MIN</th>
+            <th>FGM</th>
+            <th>FGA</th>
+            <th>FG%</th>
+            <th>FTM</th>
+            <th>FTA</th>
+            <th>FT%</th>
+            <th>3PM</th>
+            <th>3PA</th>
+            <th>3P%</th>
+            <th>OREB</th>
+            <th>DREB</th>
+            <th>REB</th>
+            <th>AST</th>
+            <th>STL</th>
+            <th>BLK</th>
+            <th>TO</th>
+            <th>PF</th>
+            <th>+/-</th>
+            <th>PTS</th>
+        </tr>
+    {% for row in boxscore[team[0]] %}
+        <tr>
+        {% for field in row %}
+            <td>{{field}}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endfor %}
+</div>
