@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/', defaults={'date': None})
 @app.route('/<date>')
-def show_scoreboard2(date):
+def show_scoreboard(date):
     if date is None:
         date = datetime.datetime.today()
     else:
@@ -20,13 +20,13 @@ def show_scoreboard2(date):
     current_date = date.strftime('%Y%m%d')
     date = date.strftime('%Y%m%d')
 
-    json = get_scoreboard2_json(date)
+    json = get_scoreboard_json(date)
 
-    return render_template('scoreboard2.html', dates=dates, games=json['games'])
+    return render_template('scoreboard.html', dates=dates, games=json['games'])
 
-@app.route('/boxscore2/<date>/<gameid>')
-def show_boxscore2(date, gameid):
-    json = get_boxscore2_json(date, gameid)
+@app.route('/boxscore/<date>/<gameid>')
+def show_boxscore(date, gameid):
+    json = get_boxscore_json(escape(date), date(gameid))
 
     if 'stats' not in json:
         return 'Game has not started'
@@ -42,12 +42,12 @@ def show_boxscore2(date, gameid):
         player['playerName'] = player_record['firstName'] + ' ' + player_record['lastName']
         player['pos'] = player_record['pos']
 
-    boxscore = { teams[0][0]: [clean_boxscore2_row(row) for row in json['stats']['activePlayers'] if row['teamId'] == teams[0][0]],
-                 teams[1][0]: [clean_boxscore2_row(row) for row in json['stats']['activePlayers'] if row['teamId'] == teams[1][0]] }
+    boxscore = { teams[0][0]: [clean_boxscore_row(row) for row in json['stats']['activePlayers'] if row['teamId'] == teams[0][0]],
+                 teams[1][0]: [clean_boxscore_row(row) for row in json['stats']['activePlayers'] if row['teamId'] == teams[1][0]] }
 
-    return render_template('boxscore2.html', teams=teams, boxscore=boxscore)
+    return render_template('boxscore.html', teams=teams, boxscore=boxscore)
 
-def get_boxscore2_json(date, gameid):
+def get_boxscore_json(date, gameid):
     url = 'https://data.nba.net/prod/v1/{}/{}_boxscore.json'.format(date, gameid)
     return request_and_decode(url)
 
@@ -57,11 +57,11 @@ def get_players_json():
     url = 'http://data.nba.net/data/10s/prod/v1/{}/players.json'.format(year)
     return request_and_decode(url)
 
-def get_scoreboard2_json(date):
+def get_scoreboard_json(date):
     url = 'http://data.nba.net/data/10s/prod/v1/{}/scoreboard.json'.format(date)
     return request_and_decode(url)
 
-def clean_boxscore2_row(row):
+def clean_boxscore_row(row):
     cols = ['playerName', 'pos', 'min', 'fgm', 'fga', 'fgp', 'ftm', 'fta', 'ftp', 'tpm', 'tpa', 'tpp', 'offReb', 'defReb', 'totReb', 'assists', 'steals', 'blocks', 'turnovers', 'pFouls', 'plusMinus', 'points']
 
     return [row[x] for x in cols]

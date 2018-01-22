@@ -19,11 +19,11 @@
 </div>
 <div class="container">
 {% for game in games %}
-<a href=/boxscore2/{{dates[3]}}/{{game['gameId']}}>
-    <h5>{{game['vTeam']['triCode']}} ({{game['vTeam']['win']}}-{{game['vTeam']['loss']}}) @ {{game['hTeam']['triCode']}} ({{game['hTeam']['win']}}-{{game['hTeam']['loss']}})</h5>
-</a>
+    <a href=/boxscore/{{dates[3]}}/{{game['gameId']}}>
+        <h5>{{game['vTeam']['triCode']}} ({{game['vTeam']['win']}}-{{game['vTeam']['loss']}}) @ {{game['hTeam']['triCode']}} ({{game['hTeam']['win']}}-{{game['hTeam']['loss']}})</h5>
+    </a>
 {% if game['isGameActivated'] %}
-<h6>{{game['clock']}} in period {{game['period']['current']}}</h6>
+    <h6>{{game['clock']}} in period {{game['period']['current']}}</h6>
 {% endif %}
     <table class="table table-sm">
         <tr>
