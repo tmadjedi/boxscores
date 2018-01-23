@@ -26,7 +26,7 @@ def show_scoreboard(date):
 
 @app.route('/boxscore/<date>/<gameid>')
 def show_boxscore(date, gameid):
-    json = get_boxscore_json(escape(date), date(gameid))
+    json = get_boxscore_json(date, gameid)
 
     if 'stats' not in json:
         return 'Game has not started'
