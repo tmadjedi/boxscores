@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <div class="container">
-    <a href="/"><h4>Scoreboard</h4></a>
+    <nav class="navbar">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/">
+                Scoreboard
+            </a>
+        </div>
+    </nav>
 </div>
 <div class="container">
 {% for teamType, teamId, triCode in [('vTeam', boxscore['basicGameData']['vTeam']['teamId'], boxscore['basicGameData']['vTeam']['triCode']),
