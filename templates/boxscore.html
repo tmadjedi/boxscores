@@ -9,8 +9,9 @@
     <a href="/"><h4>Scoreboard</h4></a>
 </div>
 <div class="container">
-{% for team in teams %}
-    <h2>{{team[1]}}</h2>
+{% for teamId, triCode in [(boxscore['basicGameData']['vTeam']['teamId'], boxscore['basicGameData']['vTeam']['triCode']),
+                           (boxscore['basicGameData']['hTeam']['teamId'], boxscore['basicGameData']['hTeam']['triCode'])] %}
+    <h2>{{ triCode }}</h2>
     <table class="table table-sm table-striped table-responsive">
         <tr>
             <th>PLAYER</th>
@@ -36,11 +37,74 @@
             <th>+/-</th>
             <th>PTS</th>
         </tr>
-    {% for row in boxscore[team[0]] %}
+        {% for player in boxscore['stats']['activePlayers'] if player['teamId'] == teamId %}
         <tr>
-        {% for field in row %}
-            <td>{{field}}</td>
-        {% endfor %}
+            <td>
+                {{player['playerName']}}
+            </td>
+            <td>
+                {{player['pos']}}
+            </td>
+            <td>
+                {{player['min']}}
+            </td>
+            <td>
+                {{player['fgm']}}
+            </td>
+            <td>
+                {{player['fga']}}
+            </td>
+            <td>
+                {{player['fgp']}}
+            </td>
+            <td>
+                {{player['ftm']}}
+            </td>
+            <td>
+                {{player['fta']}}
+            </td>
+            <td>
+                {{player['ftp']}}
+            </td>
+            <td>
+                {{player['tpm']}}
+            </td>
+            <td>
+                {{player['tpa']}}
+            </td>
+            <td>
+                {{player['tpp']}}
+            </td>
+            <td>
+                {{player['offReb']}}
+            </td>
+            <td>
+                {{player['defReb']}}
+            </td>
+            <td>
+                {{player['totReb']}}
+            </td>
+            <td>
+                {{player['assists']}}
+            </td>
+            <td>
+                {{player['steals']}}
+            </td>
+            <td>
+                {{player['blocks']}}
+            </td>
+            <td>
+                {{player['turnovers']}}
+            </td>
+            <td>
+                {{player['pFouls']}}
+            </td>
+            <td>
+                {{player['plusMinus']}}
+            </td>
+            <td>
+                {{player['points']}}
+            </td>
         </tr>
     {% endfor %}
     </table>

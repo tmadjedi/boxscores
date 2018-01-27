@@ -26,26 +26,19 @@ def show_scoreboard(date):
 
 @app.route('/boxscore/<date>/<gameid>')
 def show_boxscore(date, gameid):
-    json = get_boxscore_json(date, gameid)
+    boxscore = get_boxscore_json(date, gameid)
 
-    if 'stats' not in json:
+    if 'stats' not in boxscore:
         return 'Game has not started'
 
-    teams = [[json['basicGameData']['vTeam']['teamId'], json['basicGameData']['vTeam']['triCode']],
-             [json['basicGameData']['hTeam']['teamId'], json['basicGameData']['hTeam']['triCode']]]
-
     players_json = get_players_json()
-    players = json['stats']['activePlayers']
 
-    for player in players:
+    for player in boxscore['stats']['activePlayers']:
         player_record = next(record for record in players_json['league']['standard'] if record['personId'] == player['personId'])
         player['playerName'] = player_record['firstName'] + ' ' + player_record['lastName']
         player['pos'] = player_record['pos']
 
-    boxscore = { teams[0][0]: [clean_boxscore_row(row) for row in json['stats']['activePlayers'] if row['teamId'] == teams[0][0]],
-                 teams[1][0]: [clean_boxscore_row(row) for row in json['stats']['activePlayers'] if row['teamId'] == teams[1][0]] }
-
-    return render_template('boxscore.html', teams=teams, boxscore=boxscore)
+    return render_template('boxscore.html', boxscore=boxscore)
 
 def get_boxscore_json(date, gameid):
     url = 'https://data.nba.net/prod/v1/{}/{}_boxscore.json'.format(date, gameid)
@@ -60,11 +53,6 @@ def get_players_json():
 def get_scoreboard_json(date):
     url = 'http://data.nba.net/data/10s/prod/v1/{}/scoreboard.json'.format(date)
     return request_and_decode(url)
-
-def clean_boxscore_row(row):
-    cols = ['playerName', 'pos', 'min', 'fgm', 'fga', 'fgp', 'ftm', 'fta', 'ftp', 'tpm', 'tpa', 'tpp', 'offReb', 'defReb', 'totReb', 'assists', 'steals', 'blocks', 'turnovers', 'pFouls', 'plusMinus', 'points']
-
-    return [row[x] for x in cols]
 
 def request_and_decode(url):
     headers = {
