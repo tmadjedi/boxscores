@@ -33,11 +33,24 @@
             </a>
         </div>
         <div class="col text-right"> 
+        {% if game['watch']['broadcast']['broadcasters']['national'] and game['statusNum'] < 3 %}
+            <strong>{{game['watch']['broadcast']['broadcasters']['national'][0]['shortName']}}</strong>
+        {% endif %}
+        {% if game['statusNum'] == 1 %}
             {{game['startTimeEastern']}}
+        {% endif %}
         </div>
     </div>
 {% if game['isGameActivated'] %}
-    <h6>{{game['clock']}} in period {{game['period']['current']}}</h6>
+    <div class="row">
+    {% if game['period']['isHalftime'] %}
+        Halftime
+    {% elif game['period']['isEndOfPeriod'] %}
+        End of period {{game['period']['current']}}
+    {% else %}
+        {{game['clock']}} in period {{game['period']['current']}}
+    {% endif %}
+    </div>
 {% endif %}
     <table class="table table-sm">
         <tr>
@@ -53,14 +66,14 @@
         {% endfor %}
             <th>SCORE</th>
         </tr>
-        <tr>
+        <tr {% if game['vTeam']['score']|int() > game['hTeam']['score']|int() %} style="font-weight: bold;"{% endif %}>
             <td>{{game['vTeam']['triCode']}}</td>
         {% for q in game['vTeam']['linescore'] %}
         <td>{{q['score']}}</td>
         {% endfor %}
             <td>{{game['vTeam']['score']}}</td>
         </tr>
-        <tr>
+        <tr {% if game['hTeam']['score']|int() > game['vTeam']['score']|int() %} style="font-weight: bold;"{% endif %}>
             <td>{{game['hTeam']['triCode']}} </td>
         {% for q in game['hTeam']['linescore'] %}
             <td>{{q['score']}}</td>
