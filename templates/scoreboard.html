@@ -1,27 +1,41 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
 </head>
 <div class="container">
-    <ul class="list-inline">
+    <nav class="navbar">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/">
+                Scoreboard
+            </a>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <ul class="nav nav-pills nav-fill">
     {% for date in dates %}
-        <li class="list-inline-item">
-            <a href=/{{date}}><h4>
-            {% if loop.index == 4 %}
-                <strong>{{date}}</strong>
-            {% else %}
-                {{date}}
-            {% endif %}
-            </h4></a>
+        <li class="nav-item">
+            <a class="nav-link {% if loop.index == 3 %} active {% endif %}" href="/{{date}}">
+                {{date[4:6]}}/{{date[6:8]}}
+            </a>
         </li>
     {% endfor %}
     </ul>
 </div>
 <div class="container">
 {% for game in games %}
-    <a href=/boxscore/{{dates[3]}}/{{game['gameId']}}>
-        <h5>{{game['vTeam']['triCode']}} ({{game['vTeam']['win']}}-{{game['vTeam']['loss']}}) @ {{game['hTeam']['triCode']}} ({{game['hTeam']['win']}}-{{game['hTeam']['loss']}}) - {{game['startTimeEastern']}}</h5>
-    </a>
+    <div class="row">
+        <div class="col">
+            <a href=/boxscore/{{dates[2]}}/{{game['gameId']}}>
+                {{game['vTeam']['triCode']}} ({{game['vTeam']['win']}}-{{game['vTeam']['loss']}}) @ {{game['hTeam']['triCode']}} ({{game['hTeam']['win']}}-{{game['hTeam']['loss']}})
+            </a>
+        </div>
+        <div class="col text-right"> 
+            {{game['startTimeEastern']}}
+        </div>
+    </div>
 {% if game['isGameActivated'] %}
     <h6>{{game['clock']}} in period {{game['period']['current']}}</h6>
 {% endif %}

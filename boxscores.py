@@ -15,7 +15,7 @@ def show_scoreboard(date):
     else:
         date = datetime.datetime.strptime(date, '%Y%m%d')
 
-    dates = [date + datetime.timedelta(days=i) for i in range(-3, 4)]
+    dates = [date + datetime.timedelta(days=i) for i in range(-2, 3)]
     dates = [date.strftime('%Y%m%d') for date in dates]
     current_date = date.strftime('%Y%m%d')
     date = date.strftime('%Y%m%d')
