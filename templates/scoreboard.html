@@ -14,10 +14,10 @@
     </nav>
 </div>
 <div class="container">
-    <ul class="nav nav-pills nav-fill">
+    <ul class="nav nav-fill">
     {% for date in dates %}
         <li class="nav-item">
-            <a class="nav-link {% if loop.index == 3 %} active {% endif %}" href="/{{date}}">
+            <a class="nav-link" {% if loop.index == 3 %} style="font-weight: bold;" {% endif %} href="/{{date}}">
                 {{date[4:6]}}/{{date[6:8]}}
             </a>
         </li>
@@ -43,13 +43,15 @@
     </div>
 {% if game['isGameActivated'] %}
     <div class="row">
-    {% if game['period']['isHalftime'] %}
-        Halftime
-    {% elif game['period']['isEndOfPeriod'] %}
-        End of period {{game['period']['current']}}
-    {% else %}
-        {{game['clock']}} in period {{game['period']['current']}}
-    {% endif %}
+        <div class="col">
+        {% if game['period']['isHalftime'] %}
+            Halftime
+        {% elif game['period']['isEndOfPeriod'] %}
+            End of period {{game['period']['current']}}
+        {% else %}
+            {{game['clock']}} in period {{game['period']['current']}}
+        {% endif %}
+        </div>
     </div>
 {% endif %}
     <table class="table table-sm">
@@ -66,14 +68,14 @@
         {% endfor %}
             <th>SCORE</th>
         </tr>
-        <tr {% if game['vTeam']['score']|int() > game['hTeam']['score']|int() %} style="font-weight: bold;"{% endif %}>
+        <tr {% if game['vTeam']['score']|int() > game['hTeam']['score']|int() and game['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
             <td>{{game['vTeam']['triCode']}}</td>
         {% for q in game['vTeam']['linescore'] %}
         <td>{{q['score']}}</td>
         {% endfor %}
             <td>{{game['vTeam']['score']}}</td>
         </tr>
-        <tr {% if game['hTeam']['score']|int() > game['vTeam']['score']|int() %} style="font-weight: bold;"{% endif %}>
+        <tr {% if game['hTeam']['score']|int() > game['vTeam']['score']|int() and game['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
             <td>{{game['hTeam']['triCode']}} </td>
         {% for q in game['hTeam']['linescore'] %}
             <td>{{q['score']}}</td>
