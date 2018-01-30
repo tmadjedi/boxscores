@@ -15,6 +15,52 @@
     </nav>
 </div>
 <div class="container">
+    <table class="table table-sm">
+        <tr>
+            <th>TEAM</th>
+        {% for q in boxscore['basicGameData']['vTeam']['linescore'] %}
+            <th>
+        {% if loop.index <= 4 %}
+           Q{{loop.index}}
+        {% else %}
+           OT{{loop.index - 4}}
+        {% endif %}
+            </th>
+        {% endfor %}
+            <th>SCORE</th>
+        </tr>
+        <tr {% if boxscore['basicGameData']['vTeam']['score']|int() > boxscore['basicGameData']['hTeam']['score']|int()
+               and boxscore['basicGameData']['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
+            <td>{{boxscore['basicGameData']['vTeam']['triCode']}}</td>
+        {% for q in boxscore['basicGameData']['vTeam']['linescore'] %}
+        <td>{{q['score']}}</td>
+        {% endfor %}
+            <td>{{boxscore['basicGameData']['vTeam']['score']}}</td>
+        </tr>
+        <tr {% if boxscore['basicGameData']['hTeam']['score']|int() > boxscore['basicGameData']['vTeam']['score']|int()
+               and boxscore['basicGameData']['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
+            <td>{{boxscore['basicGameData']['hTeam']['triCode']}} </td>
+        {% for q in boxscore['basicGameData']['hTeam']['linescore'] %}
+            <td>{{q['score']}}</td>
+        {% endfor %}
+            <td>{{boxscore['basicGameData']['hTeam']['score']}}</td>
+        </tr>
+    </table>
+</div>
+{% if boxscore['basicGameData']['isGameActivated'] %}
+<div class="row">
+    <div class="col">
+    {% if boxscore['basicGameData']['period']['isHalftime'] %}
+        Halftime
+    {% elif boxscore['basicGameData']['period']['isEndOfPeriod'] %}
+        End of period {{boxscore['basicGameData']['period']['current']}}
+    {% else %}
+        {{boxscore['basicGameData']['clock']}} in period {{boxscore['basicGameData']['period']['current']}}
+    {% endif %}
+    </div>
+</div>
+{% endif %}
+<div class="container">
 {% for teamType, teamId, triCode in [('vTeam', boxscore['basicGameData']['vTeam']['teamId'], boxscore['basicGameData']['vTeam']['triCode']),
                                      ('hTeam', boxscore['basicGameData']['hTeam']['teamId'], boxscore['basicGameData']['hTeam']['triCode'])] %}
     <h2>{{ triCode }}</h2>
