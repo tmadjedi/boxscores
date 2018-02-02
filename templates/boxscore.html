@@ -15,6 +15,14 @@
     </nav>
 </div>
 <div class="container">
+    <h3>
+        {{boxscore['basicGameData']['vTeam']['triCode']}} 
+        ({{boxscore['basicGameData']['vTeam']['win']}}-{{boxscore['basicGameData']['vTeam']['loss']}}) 
+        @ {{boxscore['basicGameData']['hTeam']['triCode']}}
+        ({{boxscore['basicGameData']['hTeam']['win']}}-{{boxscore['basicGameData']['hTeam']['loss']}})
+    </h3>
+</div>
+<div class="container">
     <table class="table table-sm">
         <tr>
             <th>TEAM</th>
@@ -63,7 +71,7 @@
 <div class="container">
 {% for teamType, teamId, triCode in [('vTeam', boxscore['basicGameData']['vTeam']['teamId'], boxscore['basicGameData']['vTeam']['triCode']),
                                      ('hTeam', boxscore['basicGameData']['hTeam']['teamId'], boxscore['basicGameData']['hTeam']['triCode'])] %}
-    <h2>{{ triCode }}</h2>
+    <h4>{{ triCode }}</h4>
     <table class="table table-sm table-striped table-responsive">
         <tr>
             <th>PLAYER</th>
