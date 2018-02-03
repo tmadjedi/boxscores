@@ -31,7 +31,7 @@ def show_boxscore(date, gameid):
     if 'stats' not in boxscore:
         return 'Game has not started'
 
-    players_json = get_players_json()
+    players_json = get_players_json(boxscore['basicGameData']['seasonYear'])
 
     for player in boxscore['stats']['activePlayers']:
         player_record = next(record for record in players_json['league']['standard'] if record['personId'] == player['personId'])
@@ -45,17 +45,21 @@ def show_standings():
     date = datetime.datetime.today().strftime('%Y%m%d')
 
     standings = get_standings_json(date)
+    teams = get_teams_json(standings['league']['standard']['seasonYear'])
+    teams = {team['teamId']: team['tricode'] for team in teams['league']['standard']}
 
-    return render_template('standings.html', standings=standings)
+    return render_template('standings.html', standings=standings, teams=teams)
 
 def get_boxscore_json(date, gameid):
     url = 'https://data.nba.net/prod/v1/{}/{}_boxscore.json'.format(date, gameid)
     return request_and_decode(url)
 
-def get_players_json():
-    #TODO: populate year dynamically
-    year = 2017
+def get_players_json(year):
     url = 'http://data.nba.net/data/10s/prod/v1/{}/players.json'.format(year)
+    return request_and_decode(url)
+
+def get_teams_json(year):
+    url = 'http://data.nba.net/data/10s/prod/v1/{}/teams.json'.format(year)
     return request_and_decode(url)
 
 def get_scoreboard_json(date):

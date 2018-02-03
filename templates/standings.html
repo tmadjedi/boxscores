@@ -21,6 +21,7 @@
 </div>
 {% for conf in ['east', 'west'] %}
 <div class="container">
+    <h4>{% if conf == 'east' %}EAST{% else %}WEST{% endif %}</h4>
     <table class="table table-responsive">
         <tr>
             <th>
@@ -32,17 +33,65 @@
             <th>
                 LOSS
             </th>
+            <th>
+                WIN%
+            </th>
+            <th>
+                GB
+            </th>
+            <th>
+                CONF
+            </th>
+            <th>
+                DIV
+            </th>
+            <th>
+                HOME
+            </th>
+            <th>
+                AWAY
+            </th>
+            <th>
+                L10
+            </th>
+            <th>
+                STREAK
+            </th>
         </tr>
     {% for team in standings['league']['standard']['conference'][conf] %}
         <tr>
             <td>
-                {{team['teamId']}}
+                {{teams[team['teamId']]}}
             </td>
             <td>
                 {{team['win']}}
             </td>
             <td>
                 {{team['loss']}}
+            </td>
+            <td>
+                {{team['winPct']}}
+            </td>
+            <td>
+                {{team['gamesBehind']}}
+            </td>
+            <td>
+                {{team['confWin']}}-{{team['confLoss']}}
+            </td>
+            <td>
+                {{team['divWin']}}-{{team['divLoss']}}
+            </td>
+            <td>
+                {{team['homeWin']}}-{{team['homeLoss']}}
+            </td>
+            <td>
+                {{team['awayWin']}}-{{team['awayLoss']}}
+            </td>
+            <td>
+                {{team['lastTenWin']}}-{{team['lastTenLoss']}}
+            </td>
+            <td>
+                {% if team['isWinStreak'] %}W{% else %}L{% endif %}{{team['streak']}}
             </td>
         </tr>
     {% endfor %}
