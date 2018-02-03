@@ -40,6 +40,14 @@ def show_boxscore(date, gameid):
 
     return render_template('boxscore.html', boxscore=boxscore)
 
+@app.route('/standings')
+def show_standings():
+    date = datetime.datetime.today().strftime('%Y%m%d')
+
+    standings = get_standings_json(date)
+
+    return render_template('standings.html', standings=standings)
+
 def get_boxscore_json(date, gameid):
     url = 'https://data.nba.net/prod/v1/{}/{}_boxscore.json'.format(date, gameid)
     return request_and_decode(url)
@@ -52,6 +60,10 @@ def get_players_json():
 
 def get_scoreboard_json(date):
     url = 'http://data.nba.net/data/10s/prod/v1/{}/scoreboard.json'.format(date)
+    return request_and_decode(url)
+
+def get_standings_json(date):
+    url = 'http://data.nba.net/data/10s/prod/v1/{}/standings_conference.json'.format(date)
     return request_and_decode(url)
 
 def request_and_decode(url):
