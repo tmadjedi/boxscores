@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<div class="container">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/">
+                Scoreboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/standings">
+                Standings
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="container">
+{% for team in teams['league']['standard'] if team['teamId'] == teamid %}
+    <h3>
+        {{ team['fullName'] }}
+    </h3>
+{% endfor %}
+    <table class="table table-sm table-responsive">
+        <tr>
+            <th>
+                DATE
+            </th>
+            <th>
+                OPPONENT
+            </th>
+            <th>
+                SCORE
+            </th>
+        </tr>
+    {% for game in schedule['league']['standard'] %}
+        <tr>
+            <td>
+                {{ game['startDateEastern'][4:6] }}/{{ game['startDateEastern'][6:] }}
+            </td>
+            <td>
+                test
+            </td>
+            <td>
+                test
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>

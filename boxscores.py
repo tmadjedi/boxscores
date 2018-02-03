@@ -50,6 +50,14 @@ def show_standings():
 
     return render_template('standings.html', standings=standings, teams=teams)
 
+@app.route('/schedule/<year>/<team_name>')
+def show_schedule(year, team_name):
+    schedule = get_schedule_json(year, team_name)
+    teams = get_teams_json(year)
+    teamid = next(team['teamId'] for team in teams['league']['standard'] if team['urlName'] == team_name)
+
+    return render_template('schedule.html', schedule=schedule, teamid=teamid, teams=teams)
+
 def get_boxscore_json(date, gameid):
     url = 'https://data.nba.net/prod/v1/{}/{}_boxscore.json'.format(date, gameid)
     return request_and_decode(url)
@@ -68,6 +76,10 @@ def get_scoreboard_json(date):
 
 def get_standings_json(date):
     url = 'http://data.nba.net/data/10s/prod/v1/{}/standings_conference.json'.format(date)
+    return request_and_decode(url)
+
+def get_schedule_json(year, team):
+    url = 'http://data.nba.net/data/10s/prod/v1/{}/teams/{}/schedule.json'.format(year, team)
     return request_and_decode(url)
 
 def request_and_decode(url):
