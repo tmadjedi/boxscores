@@ -31,22 +31,44 @@
                 DATE
             </th>
             <th>
-                OPPONENT
+                OPP
+            </th>
+            <th>
+                W/L
             </th>
             <th>
                 SCORE
             </th>
         </tr>
-    {% for game in schedule['league']['standard'] %}
+        {% for game in schedule['league']['standard'] if game['seasonStageId']|int() > 1 %}
         <tr>
             <td>
                 {{ game['startDateEastern'][4:6] }}/{{ game['startDateEastern'][6:] }}
             </td>
             <td>
-                test
+        {% if schedule['isHomeTeam'] %}
+            {% for team in teams['league']['standard'] if team['teamId'] == game['vTeam']['teamId'] %}
+            {{ team['tricode'] }}
+            {% endfor %}
+        {% else %}
+            {% for team in teams['league']['standard'] if team['teamId'] == game['hTeam']['teamId'] %}
+            {{ team['tricode'] }}
+            {% endfor %}
+        {% endif %}
+            </td>
+            <td class="success">
+        {% if game['isHomeTeam'] and game['hTeam']['score']|int() > game['vTeam']['score']|int() %}
+                W
+        {% elif not game['isHomeTeam'] and game['vTeam']['score']|int() > game['hTeam']['score']|int() %}
+                W
+        {% else %}
+                L
+        {% endif %}
             </td>
             <td>
-                test
+                <a href="/boxscore/{{ game['startDateEastern'] }}/{{ game['gameId']}}">
+                    {{ game['hTeam']['score'] }}-{{ game['vTeam']['score'] }}
+                </a>
             </td>
         </tr>
     {% endfor %}

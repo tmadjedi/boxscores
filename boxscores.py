@@ -34,9 +34,10 @@ def show_boxscore(date, gameid):
     players_json = get_players_json(boxscore['basicGameData']['seasonYear'])
 
     for player in boxscore['stats']['activePlayers']:
-        player_record = next(record for record in players_json['league']['standard'] if record['personId'] == player['personId'])
-        player['playerName'] = player_record['firstName'] + ' ' + player_record['lastName']
-        player['pos'] = player_record['pos']
+        for record in players_json['league']['standard']:
+            if record['personId'] == player['personId']:
+                player['playerName'] = record['firstName'] + ' ' + record['lastName']
+                player['pos'] = record['pos']
 
     return render_template('boxscore.html', boxscore=boxscore)
 
