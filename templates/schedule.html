@@ -46,7 +46,7 @@
                 {{ game['startDateEastern'][4:6] }}/{{ game['startDateEastern'][6:] }}
             </td>
             <td>
-        {% if schedule['isHomeTeam'] %}
+        {% if game['isHomeTeam'] %}
             {% for team in teams['league']['standard'] if team['teamId'] == game['vTeam']['teamId'] %}
             {{ team['tricode'] }}
             {% endfor %}
@@ -57,18 +57,20 @@
         {% endif %}
             </td>
             <td class="success">
-        {% if game['isHomeTeam'] and game['hTeam']['score']|int() > game['vTeam']['score']|int() %}
+        {% if game['statusNum == 3'] and game['isHomeTeam'] and game['hTeam']['score']|int() > game['vTeam']['score']|int() %}
                 W
-        {% elif not game['isHomeTeam'] and game['vTeam']['score']|int() > game['hTeam']['score']|int() %}
+        {% elif game['statusNum'] == 3 and not game['isHomeTeam'] and game['vTeam']['score']|int() > game['hTeam']['score']|int() %}
                 W
-        {% else %}
+        {% elif game['statusNum'] == 3 %}
                 L
         {% endif %}
             </td>
             <td>
+            {% if game['statusNum']|int() > 1 %}
                 <a href="/boxscore/{{ game['startDateEastern'] }}/{{ game['gameId']}}">
                     {{ game['hTeam']['score'] }}-{{ game['vTeam']['score'] }}
                 </a>
+            {% endif %}
             </td>
         </tr>
     {% endfor %}

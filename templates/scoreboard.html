@@ -74,14 +74,22 @@
             <th>SCORE</th>
         </tr>
         <tr {% if game['vTeam']['score']|int() > game['hTeam']['score']|int() and game['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
-            <td>{{game['vTeam']['triCode']}}</td>
+            <td>
+                <a href=/schedule/{{ game['seasonYear'] }}/{{ game['vTeam']['teamId'] }}>
+                    {{ game['vTeam']['triCode'] }}
+                </a>
+            </td>
         {% for q in game['vTeam']['linescore'] %}
         <td>{{q['score']}}</td>
         {% endfor %}
             <td>{{game['vTeam']['score']}}</td>
         </tr>
         <tr {% if game['hTeam']['score']|int() > game['vTeam']['score']|int() and game['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
-            <td>{{game['hTeam']['triCode']}} </td>
+            <td>
+                <a href=/schedule/{{ game['seasonYear'] }}/{{ game['hTeam']['teamId'] }}>
+                    {{ game['hTeam']['triCode'] }} 
+                </a>
+            </td>
         {% for q in game['hTeam']['linescore'] %}
             <td>{{q['score']}}</td>
         {% endfor %}

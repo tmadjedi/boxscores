@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 import json
 import urllib.request
@@ -24,8 +24,9 @@ def show_scoreboard(date):
 
     return render_template('scoreboard.html', dates=dates, games=json['games'])
 
-@app.route('/boxscore/<date>/<gameid>')
-def show_boxscore(date, gameid):
+@app.route('/boxscore/<date>/<gameid>', defaults={'size': None})
+@app.route('/boxscore/<date>/<gameid>/<size>')
+def show_boxscore(date, gameid, size):
     boxscore = get_boxscore_json(date, gameid)
 
     if 'stats' not in boxscore:
@@ -38,8 +39,18 @@ def show_boxscore(date, gameid):
             if record['personId'] == player['personId']:
                 player['playerName'] = record['firstName'] + ' ' + record['lastName']
                 player['pos'] = record['pos']
+                
+    if size is None and 'Android' in request.headers['User-Agent']:
+        size = 'compact'
 
-    return render_template('boxscore.html', boxscore=boxscore)
+    if size == 'compact' :
+        template = 'boxscore-mobile.html'
+    elif size == 'full':
+        template = 'boxscore.html'
+    else:
+        template = 'boxscore.html'
+
+    return render_template(template, boxscore=boxscore)
 
 @app.route('/standings')
 def show_standings():
@@ -51,11 +62,10 @@ def show_standings():
 
     return render_template('standings.html', standings=standings, teams=teams)
 
-@app.route('/schedule/<year>/<team_name>')
-def show_schedule(year, team_name):
-    schedule = get_schedule_json(year, team_name)
+@app.route('/schedule/<year>/<teamid>')
+def show_schedule(year, teamid):
+    schedule = get_schedule_json(year, teamid)
     teams = get_teams_json(year)
-    teamid = next(team['teamId'] for team in teams['league']['standard'] if team['urlName'] == team_name)
 
     return render_template('schedule.html', schedule=schedule, teamid=teamid, teams=teams)
 
@@ -79,8 +89,8 @@ def get_standings_json(date):
     url = 'http://data.nba.net/data/10s/prod/v1/{}/standings_conference.json'.format(date)
     return request_and_decode(url)
 
-def get_schedule_json(year, team):
-    url = 'http://data.nba.net/data/10s/prod/v1/{}/teams/{}/schedule.json'.format(year, team)
+def get_schedule_json(year, teamid):
+    url = 'http://data.nba.net/data/10s/prod/v1/{}/teams/{}/schedule.json'.format(year, teamid)
     return request_and_decode(url)
 
 def request_and_decode(url):

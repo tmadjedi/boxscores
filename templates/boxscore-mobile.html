@@ -51,15 +51,23 @@
         </tr>
         <tr {% if boxscore['basicGameData']['vTeam']['score']|int() > boxscore['basicGameData']['hTeam']['score']|int()
                and boxscore['basicGameData']['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
-            <td>{{boxscore['basicGameData']['vTeam']['triCode']}}</td>
+            <td>
+                <a href='/schedule/{{ boxscore['basicGameData']['seasonYear'] }}/{{ boxscore['basicGameData']['vTeam']['teamId'] }}'>
+                    {{ boxscore['basicGameData']['vTeam']['triCode'] }}
+                </a>
+            </td>
         {% for q in boxscore['basicGameData']['vTeam']['linescore'] %}
-        <td>{{q['score']}}</td>
+            <td>{{q['score']}}</td>
         {% endfor %}
             <td>{{boxscore['basicGameData']['vTeam']['score']}}</td>
         </tr>
         <tr {% if boxscore['basicGameData']['hTeam']['score']|int() > boxscore['basicGameData']['vTeam']['score']|int()
                and boxscore['basicGameData']['statusNum'] == 3 %} style="font-weight: bold;"{% endif %}>
-            <td>{{boxscore['basicGameData']['hTeam']['triCode']}} </td>
+            <td>
+                <a href='/schedule/{{ boxscore['basicGameData']['seasonYear'] }}/{{ boxscore['basicGameData']['hTeam']['teamId'] }}'>
+                    {{ boxscore['basicGameData']['hTeam']['triCode'] }}
+                </a>
+            </td>
         {% for q in boxscore['basicGameData']['hTeam']['linescore'] %}
             <td>{{q['score']}}</td>
         {% endfor %}
