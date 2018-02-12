@@ -57,12 +57,14 @@
         {% endif %}
             </td>
             <td class="success">
-        {% if game['statusNum == 3'] and game['isHomeTeam'] and game['hTeam']['score']|int() > game['vTeam']['score']|int() %}
+        {% if game['statusNum'] == 3 %}
+            {% if game['isHomeTeam'] and game['hTeam']['score']|int() > game['vTeam']['score']|int() %}
                 W
-        {% elif game['statusNum'] == 3 and not game['isHomeTeam'] and game['vTeam']['score']|int() > game['hTeam']['score']|int() %}
+            {% elif not game['isHomeTeam'] and game['vTeam']['score']|int() > game['hTeam']['score']|int() %}
                 W
-        {% elif game['statusNum'] == 3 %}
+            {% else %}
                 L
+            {% endif %}
         {% endif %}
             </td>
             <td>
