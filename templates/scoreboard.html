@@ -1,24 +1,11 @@
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta charset="utf-8">
-</head>
-<div class="container">
-    <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link" href="/">
-                Scoreboard
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/standings">
-                Standings
-            </a>
-        </li>
-    </ul>
-</div>
-<div class="container">
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
     <ul class="nav nav-fill">
     {% for date in dates %}
         <li class="nav-item">
@@ -97,4 +84,4 @@
         </tr>
     </table>
 {% endfor %}
-</div>
+{% endblock %}
