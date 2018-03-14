@@ -25,6 +25,9 @@
     <table class="table table-responsive">
         <tr>
             <th>
+                #
+            </th>
+            <th>
                 TEAM
             </th>
             <th>
@@ -61,37 +64,42 @@
     {% for team in standings['league']['standard']['conference'][conf] %}
         <tr>
             <td>
-                {{teams[team['teamId']]}}
+                {{ loop.index }}
             </td>
             <td>
-                {{team['win']}}
+                <a href="/schedule/{{ standings['league']['standard']['seasonYear'] }}/{{ team['teamId'] }}">
+                    {{ teams[team['teamId']] }}
+                </a>
             </td>
             <td>
-                {{team['loss']}}
+                {{ team['win'] }}
             </td>
             <td>
-                {{team['winPct']}}
+                {{ team['loss'] }}
             </td>
             <td>
-                {{team['gamesBehind']}}
+                {{ team['winPct'] }}
             </td>
             <td>
-                {{team['confWin']}}-{{team['confLoss']}}
+                {{ team['gamesBehind'] }}
             </td>
             <td>
-                {{team['divWin']}}-{{team['divLoss']}}
+                {{ team['confWin'] }}-{{ team['confLoss'] }}
             </td>
             <td>
-                {{team['homeWin']}}-{{team['homeLoss']}}
+                {{ team['divWin'] }}-{{ team['divLoss'] }}
             </td>
             <td>
-                {{team['awayWin']}}-{{team['awayLoss']}}
+                {{ team['homeWin'] }}-{{ team['homeLoss'] }}
             </td>
             <td>
-                {{team['lastTenWin']}}-{{team['lastTenLoss']}}
+                {{ team['awayWin'] }}-{{ team['awayLoss'] }}
             </td>
             <td>
-                {% if team['isWinStreak'] %}W{% else %}L{% endif %}{{team['streak']}}
+                {{ team['lastTenWin'] }}-{{ team['lastTenLoss'] }}
+            </td>
+            <td>
+                {% if team['isWinStreak'] %}W{% else %}L{% endif %}{{ team['streak'] }}
             </td>
         </tr>
     {% endfor %}
