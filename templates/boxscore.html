@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% macro cell(value, layout) -%}
+{% if layout == 'full' %}
+    <td>
+        {{ value }}
+    </td>
+{% endif %}
+{%- endmacro %}
 {% block head %}
     {{ super() }}
 {% endblock %}
@@ -6,8 +13,8 @@
     {{ super() }}
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="/boxscore/{{ boxscore['basicGameData']['startDateEastern'] }}/{{ boxscore['basicGameData']['gameId'] }}/compact">
-                Compact
+            <a class="nav-link" href="/boxscore/{{ boxscore['basicGameData']['startDateEastern'] }}/{{ boxscore['basicGameData']['gameId'] }}/{% if layout == 'full' %}compact{% else %}full{% endif %}">
+                {% if layout == 'full' %}Compact{% else %}Full{% endif %}
             </a>
         </li>
     </ul>
@@ -86,91 +93,67 @@
             <th>MIN</th>
             <th>FGM</th>
             <th>FGA</th>
-            <th>FG%</th>
-            <th>FTM</th>
-            <th>FTA</th>
-            <th>FT%</th>
-            <th>3PM</th>
-            <th>3PA</th>
-            <th>3P%</th>
-            <th>OREB</th>
-            <th>DREB</th>
+            {% if layout == 'full' %}<th>FG%</th>{% endif %}
+            {% if layout == 'full' %}<th>FTM</th>{% endif %}
+            {% if layout == 'full' %}<th>FTA</th>{% endif %}
+            {% if layout == 'full' %}<th>FT%</th>{% endif %}
+            {% if layout == 'full' %}<th>3PM</th>{% endif %}
+            {% if layout == 'full' %}<th>3PA</th>{% endif %}
+            {% if layout == 'full' %}<th>3P%</th>{% endif %}
+            {% if layout == 'full' %}<th>OREB</th>{% endif %}
+            {% if layout == 'full' %}<th>DREB</th>{% endif %}
             <th>REB</th>
             <th>AST</th>
             <th>STL</th>
             <th>BLK</th>
-            <th>TO</th>
-            <th>PF</th>
-            <th>+/-</th>
+            {% if layout == 'full' %}<th>TO</th>{% endif %}
+            {% if layout == 'full' %}<th>PF</th>{% endif %}
+            {% if layout == 'full' %}<th>+/-</th>{% endif %}
             <th>PTS</th>
         </tr>
         {% for player in boxscore['stats']['activePlayers'] if player['teamId'] == teamId %}
         <tr>
             <td>
-                {{player['playerName']}}
+                {{ player['playerName'] }}
             </td>
             <td>
-                {{player['pos']}}
+                {{ player['pos'] }}
             </td>
             <td>
-                {{player['min']}}
+                {{ player['min'] }}
             </td>
             <td>
-                {{player['fgm']}}
+                {{ player['fgm'] }}
             </td>
             <td>
-                {{player['fga']}}
+                {{ player['fga'] }}
+            </td>
+            {{ cell(player['fgp'], layout) }}
+            {{ cell(player['ftm'], layout) }}
+            {{ cell(player['fta'], layout) }}
+            {{ cell(player['ftp'], layout) }}
+            {{ cell(player['tpm'], layout) }}
+            {{ cell(player['tpa'], layout) }}
+            {{ cell(player['tpp'], layout) }}
+            {{ cell(player['offReb'], layout) }}
+            {{ cell(player['defReb'], layout) }}
+            <td>
+                {{ player['totReb']}}
             </td>
             <td>
-                {{player['fgp']}}
+                {{ player['assists'] }}
             </td>
             <td>
-                {{player['ftm']}}
+                {{ player['steals'] }}
             </td>
             <td>
-                {{player['fta']}}
+                {{ player['blocks'] }}
             </td>
+            {{ cell(player['turnovers'], layout) }}
+            {{ cell(player['pFouls'], layout) }}
+            {{ cell(player['plusMinus'], layout) }}
             <td>
-                {{player['ftp']}}
-            </td>
-            <td>
-                {{player['tpm']}}
-            </td>
-            <td>
-                {{player['tpa']}}
-            </td>
-            <td>
-                {{player['tpp']}}
-            </td>
-            <td>
-                {{player['offReb']}}
-            </td>
-            <td>
-                {{player['defReb']}}
-            </td>
-            <td>
-                {{player['totReb']}}
-            </td>
-            <td>
-                {{player['assists']}}
-            </td>
-            <td>
-                {{player['steals']}}
-            </td>
-            <td>
-                {{player['blocks']}}
-            </td>
-            <td>
-                {{player['turnovers']}}
-            </td>
-            <td>
-                {{player['pFouls']}}
-            </td>
-            <td>
-                {{player['plusMinus']}}
-            </td>
-            <td>
-                {{player['points']}}
+                {{ player['points'] }}
             </td>
         </tr>
     {% endfor %}
@@ -182,61 +165,37 @@
             <td>
             </td>
             <td>
-                {{boxscore['stats'][teamType]['totals']['fgm']}}
+                {{ boxscore['stats'][teamType]['totals']['fgm'] }}
             </td>
             <td>
-                {{boxscore['stats'][teamType]['totals']['fga']}}
+                {{ boxscore['stats'][teamType]['totals']['fga'] }}
+            </td>
+            {{ cell(boxscore['stats'][teamType]['totals']['fgp'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['ftm'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['fta'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['ftp'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['tpm'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['tpa'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['tpp'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['offReb'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['defReb'], layout) }}
+            <td>
+                {{ boxscore['stats'][teamType]['totals']['totReb'] }}
             </td>
             <td>
-                {{boxscore['stats'][teamType]['totals']['fgp']}}
+                {{ boxscore['stats'][teamType]['totals']['assists'] }}
             </td>
             <td>
-                {{boxscore['stats'][teamType]['totals']['ftm']}}
+                {{ boxscore['stats'][teamType]['totals']['steals'] }}
             </td>
             <td>
-                {{boxscore['stats'][teamType]['totals']['fta']}}
+                {{ boxscore['stats'][teamType]['totals']['blocks'] }}
             </td>
+            {{ cell(boxscore['stats'][teamType]['totals']['turnovers'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['pFouls'], layout) }}
+            {{ cell(boxscore['stats'][teamType]['totals']['plusMinus'], layout) }}
             <td>
-                {{boxscore['stats'][teamType]['totals']['ftp']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['tpm']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['tpa']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['tpp']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['offReb']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['defReb']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['totReb']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['assists']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['steals']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['blocks']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['turnovers']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['pFouls']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['plusMinus']}}
-            </td>
-            <td>
-                {{boxscore['stats'][teamType]['totals']['points']}}
+                {{ boxscore['stats'][teamType]['totals']['points'] }}
             </td>
         </tr>
     </table>

@@ -24,9 +24,9 @@ def show_scoreboard(date):
 
     return render_template('scoreboard.html', dates=dates, games=json['games'])
 
-@app.route('/boxscore/<date>/<gameid>', defaults={'size': None})
-@app.route('/boxscore/<date>/<gameid>/<size>')
-def show_boxscore(date, gameid, size):
+@app.route('/boxscore/<date>/<gameid>', defaults={'layout': None})
+@app.route('/boxscore/<date>/<gameid>/<layout>')
+def show_boxscore(date, gameid, layout):
     boxscore = get_boxscore_json(date, gameid)
 
     if 'stats' not in boxscore:
@@ -39,18 +39,13 @@ def show_boxscore(date, gameid, size):
             if record['personId'] == player['personId']:
                 player['playerName'] = record['firstName'] + ' ' + record['lastName']
                 player['pos'] = record['pos']
-                
-    if size is None and 'Android' in request.headers['User-Agent']:
-        size = 'compact'
 
-    if size == 'compact' :
-        template = 'boxscore-mobile.html'
-    elif size == 'full':
-        template = 'boxscore.html'
-    else:
-        template = 'boxscore.html'
+    if layout is None and 'Android' in request.headers['User-Agent']:
+        layout = 'compact'
+    elif layout is None:
+        layout = 'full'
 
-    return render_template(template, boxscore=boxscore)
+    return render_template('boxscore.html', boxscore=boxscore, layout=layout)
 
 @app.route('/standings')
 def show_standings():
